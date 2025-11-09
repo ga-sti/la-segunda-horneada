@@ -1,0 +1,9 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+sqlmodel>=0.0.20
+SQLAlchemy>=2.0
+python-jose[cryptography]>=3.3.0
+passlib>=1.7.4
+pydantic>=2.6
+passlib>=1.7.4
+

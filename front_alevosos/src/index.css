@@ -1,0 +1,446 @@
+/* FullCalendar CSS por CDN (evita bug de exports CSS del paquete) */
+@import url("https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/main.min.css");
+@import url("https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.15/main.min.css");
+
+/* Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============ FullCalendar (agenda grande) ============ */
+.fc-theme-standard td, .fc-theme-standard th { border-color: #e5e7eb; }
+.fc .fc-timegrid-slot { height: 2.5rem; }
+
+/* Encabezados (día/fecha) más grandes */
+.big-cal .fc-col-header-cell-cushion {
+  font-size: 16px;
+  font-weight: 600;
+  padding: .85rem .5rem;
+}
+
+/* Eventos tipo “card” */
+.fc .fc-timegrid-event, .fc .fc-daygrid-event {
+  border: 0 !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(2,6,23,.08);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.fc .fc-timegrid-event:hover { box-shadow: 0 8px 24px rgba(2,6,23,.18); transform: translateY(-1px); }
+.fc .fc-event-main { padding: 0 !important; }
+
+/* Contenido interno de eventos */
+.ev-card  { padding: 6px 8px; color: #fff; }
+.ev-top   { display:flex; align-items:center; gap:.25rem; font-size:11px; opacity:.95; }
+.ev-time  { font-variant-numeric: tabular-nums; }
+.ev-dot   { opacity:.6; }
+.ev-title { font-weight:700; font-size:12px; line-height:1.1; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ev-sub   { font-size:11px; opacity:.95; }
+.ev-chips { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+.ev-chip  { font-size:10px; padding:2px 6px; border-radius:6px; background: rgba(255,255,255,.22); backdrop-filter: saturate(140%); }
+.ev-notes { margin-top:4px; font-size:10px; line-height:1.2; opacity:.95; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+/* Colores por estado + fallback azul */
+.fc-ev-ok     { background: linear-gradient(180deg,#22c55e,#16a34a); color:#fff; }
+.fc-ev-cancel { background: linear-gradient(180deg,#ef4444,#b91c1c); color:#fff; }
+.fc-ev-noshow { background: linear-gradient(180deg,#64748b,#475569); color:#fff; }
+.fc .fc-timegrid-event { background: linear-gradient(180deg,#3b82f6,#2563eb); color:#fff; }
+
+/* ============ MINI CALENDARIO (estilo Google) ============ */
+.mini-cal {
+  --mini-day-size: 24px;
+  --mini-font-num: 10px;
+  --mini-ease: cubic-bezier(.2,.8,.2,1);
+}
+.mini-cal .fc-theme-standard td,
+.mini-cal .fc-theme-standard th,
+.mini-cal .fc-scrollgrid,
+.mini-cal .fc-scrollgrid-section > * { border: 0 !important; }
+.mini-cal .fc-col-header-cell-cushion {
+  font-weight: 650; font-size: 9px; color: #6b7280;
+  padding: .6rem 0 .4rem 0; letter-spacing: .04em;
+}
+.mini-cal .fc-daygrid-day-frame {
+  height: var(--mini-day-size); padding: 0; display:flex; align-items:center; justify-content:center;
+}
+.mini-cal .fc-daygrid-day-number {
+  position: relative;
+  display:inline-flex; align-items:center; justify-content:center;
+  width: calc(var(--mini-day-size) * .56);
+  height: calc(var(--mini-day-size) * .56);
+  font-size: var(--mini-font-num);
+  line-height: 1; border-radius: 10px; color: #111827; cursor: pointer;
+  will-change: transform, box-shadow, background-color, color;
+  transition: transform .16s var(--mini-ease), box-shadow .16s var(--mini-ease), background-color .16s ease, color .16s ease;
+}
+.mini-cal .fc-day-today { background: transparent !important; }
+.mini-cal .fc-day-today .fc-daygrid-day-number { background: #eef2ff; color: #1d4ed8; border-radius: 9999px; }
+@keyframes mini-pulse { 0%,100% { opacity: 0; transform: scale(1); } 50% { opacity: .9; transform: scale(1.06); } }
+.mini-cal .fc-day-today .fc-daygrid-day-number::after {
+  content: ""; position: absolute; inset: -2px; border-radius: inherit; box-shadow: 0 0 0 2px #dbeafe inset; opacity: 0; animation: mini-pulse 1.8s ease-in-out infinite;
+}
+@keyframes mini-appear { from { transform: scale(.86); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.mini-cal .is-selected .fc-daygrid-day-number { background: #e8f0ff; color: #2563eb; border-radius: 9999px; animation: mini-appear .18s ease-out; }
+.mini-cal td:not(.fc-day-other) .fc-daygrid-day-number:hover { background: #f3f4f6; transform: translateY(-1px) scale(1.06); box-shadow: 0 6px 16px rgba(17,24,39,.12); }
+.mini-cal td:not(.fc-day-other) .fc-daygrid-day-number:active { transform: scale(.95); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+.mini-cal .fc-day-other .fc-daygrid-day-number { opacity: .28; pointer-events: none; }
+.mini-cal-nav button { height: 20px; width: 20px; display:grid; place-items:center; border-radius: 9999px; transition: background .15s ease, transform .15s var(--mini-ease); }
+.mini-cal-nav button:hover  { background: #f3f4f6; transform: translateY(-1px); }
+.mini-cal-nav button:active { transform: translateY(0) scale(.96); }
+.mini-cal-title { font-size: 14px; font-weight: 500; letter-spacing: .05em; }
+.mini-cal-wrap { padding: 10px 8px 4px 8px; }
+
+/* ===== Resets varios ===== */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+
+/* ===== Encabezado del calendario grande (estilo Google) ===== */
+.big-cal .fc-col-header-cell-cushion { padding: .75rem .5rem; }
+.big-cal .fc-dow {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: .06em; color: #6b7280; text-transform: uppercase; line-height: 1;
+}
+.big-cal .fc-daynum { margin-top: .15rem; font-size: 1.5rem; font-weight: 600; line-height: 1.1; color: #111827; }
+.big-cal .fc-col-header-cell:hover .fc-daynum { transform: translateY(-1px); transition: transform .15s ease; }
+
+/* === Notion Calendar – tonos y contenedores === */
+:root{
+  --notion-bg:#0f1115;
+  --notion-panel:#141821;
+  --notion-fg:#E6EAF2;
+  --notion-muted:#9AA4B2;
+  --notion-stroke:#2A3140;
+  --tone-blue:#CFE8FF;
+  --tone-purple:#E8D8FF;
+  --tone-yellow:#FFF0C2;
+  --tone-orange:#FFDCC8;
+  --tone-green:#D9F4E7;
+  --tone-red:#FFD6D9;
+}
+body.notion-skin { background: var(--notion-bg); color: var(--notion-fg); }
+
+.calendar-month-wrap{
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+  border: 1px solid var(--notion-stroke);
+  border-radius: 16px;
+  background: var(--notion-panel);
+}
+
+/* ajustes generales FC (sin tocar toolbar nativa si la usás) */
+.fc{
+  --fc-border-color: var(--notion-stroke);
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: transparent;
+  --fc-list-event-hover-bg-color: rgba(255,255,255,0.04);
+  --fc-today-bg-color: rgba(255, 100, 100, 0.08);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+.fc .fc-timegrid-slot, .fc .fc-daygrid-day-frame { border-color: var(--notion-stroke); }
+.fc .fc-col-header-cell-cushion{
+  color: var(--notion-muted); text-transform: uppercase; font-size: 10px; letter-spacing: .08em;
+}
+
+/* Tonos Notion */
+.fc .fc-event{
+  position: relative;
+  border: 1px dashed rgba(0,0,0,0.08);
+  color: #0b1220; font-weight: 600;
+  border-radius: 12px; padding: 2px 6px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+}
+.fc-event.tone-blue   { background: var(--tone-blue); }
+.fc-event.tone-purple { background: var(--tone-purple); }
+.fc-event.tone-yellow { background: var(--tone-yellow); }
+.fc-event.tone-orange { background: var(--tone-orange); }
+.fc-event.tone-green  { background: var(--tone-green); }
+.fc-event.tone-red    { background: var(--tone-red); }
+.big-cal .fc-event::before{
+  content: none !important;   /* o display: none !important; */
+}
+
+/* Popover “+X más” */
+.fc-more-popover .fc-popover-body .fc-event{ border-radius: 10px; }
+
+/* Línea roja “ahora” */
+.fc-timegrid-now-indicator-line{ border-top: 2px solid #ff4d4f; }
+.fc-timegrid-now-indicator-arrow{ border-color: #ff4d4f transparent; }
+
+/* ✅ Scroll vertical en semana/día */
+.calendar-scroll { height: calc(100vh - 240px); }  /* ajustá 240px si tu header ocupa más/menos */
+.big-cal .fc-scroller-harness .fc-scroller{ overflow: auto !important; }
+
+/* ✅ Sin scroll en el mes (para evitar doble scroll ahí) */
+.big-cal .fc-dayGridMonth-view .fc-scroller{ overflow: visible !important; }
+
+/* 1) Neutralizar el fondo del contenedor del evento */
+.fc .fc-timegrid-event,
+.fc .fc-daygrid-event {
+  background: transparent !important;
+  color: inherit !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 16px !important; /* más redondeado */
+  overflow: visible; /* dejamos que la banda izquierda respire */
+}
+
+/* Si tenías estados con gradiente, los apagamos */
+.fc-ev-ok, .fc-ev-cancel, .fc-ev-noshow {
+  background: transparent !important;
+}
+
+/* 2) Card interna: aspecto tipo macOS/Notion */
+.ev-card{
+  position: relative;
+  padding: 8px 10px 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, .06);
+  background: var(--ev-bg, #eaf5ff);
+  color: var(--ev-fg, #0b1220);
+  box-shadow: 0 2px 8px rgba(15,23,42,.06);
+}
+
+/* Banda/acento a la izquierda */
+.ev-card::before{
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 6px;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  background: var(--ev-accent, #3b82f6);
+}
+
+/* Tipografía y layout internos */
+.ev-top    { display:flex; gap:.25rem; font-size:11px; line-height:1; color:#334155; }
+.ev-title  { margin-top:2px; font-weight:700; font-size:13px; line-height:1.15; color:#0b1220; }
+.ev-sub    { font-size:11px; color:#475569; }
+.ev-chips  { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.ev-chip   { font-size:10px; padding:2px 8px; border-radius:9999px; background: rgba(2,6,23,.08); color:#0f172a; }
+.ev-notes  { margin-top:6px; font-size:11px; color:#475569; }
+
+/* 3) Paleta por “tono” (se usa con eventClassNames -> tone-*) */
+.tone-blue  .ev-card { --ev-bg:#eaf5ff; --ev-accent:#3b82f6; }
+.tone-green .ev-card { --ev-bg:#e9f9f0; --ev-accent:#16a34a; }
+.tone-red   .ev-card { --ev-bg:#ffe8ea; --ev-accent:#ef4444; }
+.tone-yellow.ev-card,
+.tone-yellow .ev-card { --ev-bg:#fff8e5; --ev-accent:#f59e0b; }
+
+/* 4) Hover sutil para accesibilidad */
+.fc .fc-timegrid-event:hover .ev-card,
+.fc .fc-daygrid-event:hover .ev-card{
+  box-shadow: 0 6px 18px rgba(15,23,42,.12);
+  transform: translateY(-1px);
+  transition: box-shadow .15s ease, transform .15s ease;
+}
+
+/* 5) Compacidad en eventos muy cortos (tu lógica small/medium/large ya lo hace) */
+.fc .fc-timegrid-event .ev-card { pointer-events: auto; }
+/* Evento estilo “pill” (sin sombra invadiendo el lateral) */
+.big-cal .fc-timegrid-event,
+.big-cal .fc-daygrid-event{
+  border: 0 !important;
+  border-radius: 18px !important;
+  overflow: hidden;                /* mantiene todo dentro */
+  box-shadow: 0 6px 18px rgba(2,6,23,.10); /* sombra más limpia */
+}
+
+/* Contenido interno */
+.ev-card{
+  position: relative;
+  padding: 10px 12px 10px 18px;   /* deja espacio para la banda */
+  background: #e8f5ee;            /* verde muy tenue */
+}
+
+/* Banda/acento verde propia, dentro de la card (sin solapar) */
+.ev-stripe{
+  position: absolute;
+  left: 8px; top: 8px; bottom: 8px;
+  width: 6px; border-radius: 9999px;
+  background: #16a34a;            /* verde */
+  box-shadow: none;
+}
+
+/* Texto más legible */
+.ev-title{ font-weight:800; font-size:10px; color:#0f172a; }
+.ev-top{ color:#0f172a; opacity:.85; }
+.ev-sub{ color:#0f172a; opacity:.7; }
+.ev-chip{ background:#e2e8f0; color:#0f172a; opacity:.9; }
+/* Slots más compactos y líneas sólidas */
+.big-cal .fc-timegrid-slot,
+.big-cal .fc-timegrid-slot-lane {
+  height: 0.5rem;                         /* antes 2.5rem en tu CSS */
+  border-top-style: solid !important;
+  border-top-color: #e5e7eb !important;
+}
+
+/* Color de bordes general (por si un skin lo pisa) */
+.big-cal .fc-theme-standard td,
+.big-cal .fc-theme-standard th {
+  border-color: #e5e7eb !important;
+}
+/* Altura de cada slot de 15' (4 por hora => 128px/h) */
+.big-cal .fc-timegrid-slot { height: 32px; }
+
+/* Línea de cada slot */
+.big-cal .fc-timegrid-slot { border-top: 1px solid #e9edf2; }
+
+/* Línea “menor” punteada + más tenue */
+.big-cal .fc-timegrid-slot-minor { border-top-style: dotted; opacity: .65; }
+
+/* Números de la columna de horas (más chicos y gris) */
+.big-cal .fc-timegrid-axis-cushion{
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  padding: 0 .25rem;
+  letter-spacing: .02em;
+}
+
+/* Saca el divisor vertical grueso del timegrid */
+.big-cal .fc-timegrid-divider { display: none; }
+
+/* Evento: sin sombras grandes, menos paddings */
+.fc .fc-timegrid-event,
+.fc .fc-daygrid-event{
+  border: 0 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 10px rgba(6,24,44,.08);
+}
+
+/* Compactar contenido interno */
+.ev-card  { padding: 8px 10px; }
+.ev-top   { font-size: 11px; opacity: .95; }
+.ev-title { font-size: 13px; font-weight: 800; line-height: 1.1; }
+.ev-sub   { font-size: 11px; opacity: .95; }
+.ev-chip  { font-size: 11px; padding: 2px 8px; border-radius: 9999px; background: rgba(2,6,23,.08); }
+.ev-notes { font-size: 11px; -webkit-line-clamp: 2; }
+
+/* Banda de color del costado (sin pseudo-elemento gris que solapaba sombras) */
+.fc .fc-timegrid-event::before{ display:none; }  /* si no querés la banda */
+
+/* Quita el borde superior interno del grid para que no se vea la línea */
+.big-cal .fc .fc-scrollgrid { border-top: 0 !important; }
+.big-cal .fc-col-header { border-top: 0 !important; }
+
+/* Etiquetas de hora (columna izquierda): más chicas y “limpias” */
+.big-cal .fc-timegrid-axis-cushion,
+.big-cal .fc-timegrid-slot-label-cushion{
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: #374151;             /* gris oscuro agradable */
+  padding: 0 .25rem !important;
+}
+
+/* Altura de cada slot (más compacto) */
+.big-cal .fc-timegrid-slot{ height: 2rem; }  /* antes 2.5rem */
+
+/* Líneas al estilo Notion: sólida para hora, punteada para los minutos */
+.big-cal .fc-timegrid-slot { border-top: 1px solid #e5e7eb; }
+.big-cal .fc-timegrid-slot.fc-timegrid-slot-minor {
+  border-top-style: dashed;
+  border-top-color: rgba(17,24,39,.25);
+}
+
+/* Quita cualquier “borde de caja” grueso visual en el header/grid */
+.big-cal .fc-theme-standard td,
+.big-cal .fc-theme-standard th { border-color: #e5e7eb; }
+
+/* Quita bordes exteriores/top/left dentro del calendario */
+.big-cal .fc-scrollgrid{ border:0 !important; }
+.big-cal .fc-scrollgrid-section > td{ border:0 !important; }
+.big-cal .fc-col-header{ border:0 !important; }
+.big-cal .fc-timegrid-axis,
+.big-cal .fc-timegrid-body,
+.big-cal .fc-timegrid-slots { border-left:0 !important; border-top:0 !important; }
+
+/* Ocultar scrollbar por defecto en el área scrolleable del calendario */
+.big-cal .fc-scroller{
+  scrollbar-width: none;             /* Firefox */
+  scrollbar-color: transparent transparent;
+}
+
+/* Al pasar el mouse por el calendario, mostrar scrollbar fino */
+.big-cal:hover .fc-scroller{
+  scrollbar-width: thin;             /* Firefox */
+  scrollbar-color: rgba(0,0,0,.38) transparent;
+}
+
+/* WebKit (Chrome/Edge/Safari) */
+.big-cal .fc-scroller::-webkit-scrollbar{
+  width: 0; height: 0;               /* oculto */
+}
+.big-cal:hover .fc-scroller::-webkit-scrollbar{
+  width: 8px; height: 8px;           /* aparece */
+}
+.big-cal .fc-scroller::-webkit-scrollbar-track{
+  background: transparent;
+}
+.big-cal .fc-scroller::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,0.00);
+  border-radius: 9999px;
+  transition: background .18s ease;
+}
+.big-cal:hover .fc-scroller::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,.38);
+}
+
+/* Hora/gutter más chico y limpio */
+.big-cal .fc-timegrid-axis-cushion{
+  font-size: 12px;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: .01em;
+  padding: 0 .25rem;
+}
+
+/* Líneas más sutiles tipo Notion */
+.big-cal .fc-timegrid-slot{
+  height: 2.25rem;                    /* alto de fila */
+  border-color: #e5e7eb;              /* gris suave */
+}
+.big-cal .fc-timegrid-slot-lane{ background: transparent; }
+.big-cal .fc-timegrid-slot-minor{ border-top-style: dotted; opacity:.6; }
+
+/* Vista de día/semana: alto grande + scroll vertical */
+.calendar-viewport{
+  height: calc(100vh - 180px);   /* ajustá este número si te queda muy alto/bajo */
+  overflow-y: auto;
+  border-radius: 12px;
+}
+
+/* Vista de mes: también con scroll, por si el mes es muy alto */
+.calendar-month-wrap{
+  height: calc(100vh - 180px);
+  overflow-y: auto;
+}
+/* ——— Líneas del grid más suaves y sin la línea negra de arriba/izquierda ——— */
+.big-cal .fc-theme-standard td,
+.big-cal .fc-theme-standard th { border-color: #eaeef3; }
+.big-cal .fc-scrollgrid { border: 0 !important; }
+.big-cal .fc-scrollgrid-section > * { border: 0 !important; }
+
+/* Altura de los slots: más contenido por pantalla */
+.big-cal .fc-timegrid-slot { height: 2rem; } /* antes 2.5rem */
+
+/* Eje de horas más chico/estético */
+.big-cal .fc-timegrid-axis-cushion {
+  font-size: 11px; font-weight: 600; color: #6b7280;
+}
+
+/* Encabezado: día y número más chicos */
+.big-cal .fc-col-header-cell-cushion { padding: .5rem .25rem; }
+.big-cal .fc-dow   { font-size: 10px; letter-spacing: .06em; color: #6b7280; }
+.big-cal .fc-daynum{ font-size: 1.1rem; font-weight: 600; color: #111827; }
+
+/* Scrollbar sólo al hover del contenedor del calendario */
+.calendar-scroll { scrollbar-gutter: stable; }
+/* Firefox */
+.calendar-scroll { scrollbar-width: none; }
+.calendar-scroll:hover { scrollbar-width: thin; }
+/* WebKit */
+.calendar-scroll::-webkit-scrollbar { width: 0; transition: width .2s ease; }
+.calendar-scroll:hover::-webkit-scrollbar { width: 10px; }
+.calendar-scroll::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius: 8px; }
+.calendar-scroll::-webkit-scrollbar-track { background: transparent; }
