@@ -1,17 +1,34 @@
-﻿from sqlmodel import SQLModel, create_engine, Session
+﻿# panaderia_core/db/conexion.py
+from typing import Generator
+import os
 
-# MÃ¡s adelante podemos mover esta URL a variables de entorno
-DATABASE_URL = "sqlite:///./datos_panaderia.db"
+from sqlmodel import SQLModel, Session, create_engine
 
-motor = create_engine(DATABASE_URL, echo=False)
+# URL de la base de datos de la panadería.
+# Puedes sobreescribirla con la variable de entorno PANADERIA_DB_URL
+DB_URL = os.getenv("PANADERIA_DB_URL", "sqlite:///./datos_panaderia.db")
+
+# Necesario para SQLite en modo multi-hilo (como en tu data.py original)
+connect_args = {"check_same_thread": False} if DB_URL.startswith("sqlite") else {}
+
+engine = create_engine(DB_URL, echo=False, connect_args=connect_args)
 
 
-def crear_base_de_datos() -> None:
-    """Crea las tablas en la base de datos si no existen."""
-    SQLModel.metadata.create_all(motor)
+def init_db() -> None:
+    """
+    Crea todas las tablas definidas en db.modelos si no existen.
+    Similar a data.init_db(), pero apuntando a datos_panaderia.db
+    """
+    # Import tardío para registrar los modelos antes de create_all
+    from panaderia_core.db import modelos  # noqa: F401
+
+    SQLModel.metadata.create_all(engine)
 
 
-def obtener_sesion():
-    """Dependencia para FastAPI: genera una sesiÃ³n de base de datos."""
-    with Session(motor) as sesion:
-        yield sesion
+def get_session() -> Generator[Session, None, None]:
+    """
+    Devuelve una sesión de SQLModel para usar con Depends() en FastAPI.
+    Usa expire_on_commit=False como en tu proyecto original.
+    """
+    with Session(engine, expire_on_commit=False) as session:
+        yield session

@@ -1,3 +1,6 @@
 ﻿fastapi
 uvicorn
 sqlmodel
+python-jose[cryptography]
+passlib
+python-multipart
