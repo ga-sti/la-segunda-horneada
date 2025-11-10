@@ -1,4 +1,4 @@
-# 🥖 La Segunda Horneada v2
+# 🥖 La Segunda Horneada 
 
 Sistema interno de gestión y automatización para la panadería familiar **La Segunda Horneada**.
 
