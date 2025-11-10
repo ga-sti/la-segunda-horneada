@@ -7,8 +7,10 @@ from panaderia_core.servicios import (
     productos,
     ventas,
     reportes,
-    # registros_diarios  # se suma en Etapa 3
+    registros_diarios,
+    planificador, 
 )
+from panaderia_core.servicios import registros_diarios
 
 
 app = FastAPI(title="La Segunda Horneada API")
@@ -56,6 +58,27 @@ app.include_router(
     tags=["Reportes"],
 )
 
+app.include_router(
+    registros_diarios.router,
+    prefix="/api",
+    tags=["RegistrosDiarios"],
+)
+
+app.include_router(
+    registros_diarios.router,
+    prefix="/api",
+    tags=["RegistrosDiarios"],
+)
+app.include_router(
+    reportes.router,
+    prefix="/api/reportes",
+    tags=["Reportes"],
+)
+app.include_router(
+    planificador.router,
+    prefix="/api/planificador",
+    tags=["Planificador"],
+)
 
 # ---------- Endpoint de salud básico ----------
 
